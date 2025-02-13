@@ -1,0 +1,25 @@
+# IDEs and editors
+/.idea
+/.vscode
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+### Ignore logs
+/docker/nginx/logs
+/docker/php-fpm/logs
+
+# Ignore environment configuration file
+app/.env
+
+###> symfony/framework-bundle ###
+app/var/
+app/vendor/
+
+# macOS
+.DS_Store

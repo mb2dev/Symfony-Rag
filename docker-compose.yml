@@ -1,0 +1,38 @@
+services:
+  php-fpm:
+    build:
+      context: ./docker/php-fpm
+      args:
+        USER_UID: ${USER_UID}
+        USER_GID: ${USER_GID}
+        TIMEZONE: ${TIMEZONE}
+    container_name: php-fpm
+    volumes:
+      - ./app:/var/www
+      - ./docker/php-fpm/logs/:/var/log
+    networks:
+      - symfony
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9000" ]
+      interval: 30s
+      retries: 3
+      start_period: 5s
+      timeout: 10s
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./app:/var/www
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./docker/nginx/logs/:/var/log/nginx
+    depends_on:
+      - php-fpm
+    networks:
+      - symfony
+
+networks:
+  symfony:
+    driver: bridge
