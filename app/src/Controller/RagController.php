@@ -4,12 +4,16 @@ namespace App\Controller;
 
 use App\Factory\ElasticSearchClientFactory;
 use App\Factory\OllamaConfigFactory;
+use App\Form\QuestionFormType;
+use Exception;
 use LLPhant\Chat\OllamaChat;
 use LLPhant\Embeddings\EmbeddingGenerator\Ollama\OllamaEmbeddingGenerator;
 use LLPhant\Embeddings\VectorStores\Elasticsearch\ElasticsearchVectorStore;
+use LLPhant\Exception\MissingParameterException;
 use LLPhant\Query\SemanticSearch\QuestionAnswering;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class RagController extends AbstractController
@@ -23,31 +27,45 @@ final class RagController extends AbstractController
         $this->ollamaConfigFactory = $ollamaConfigFactory;
     }
 
+    /**
+     * @throws MissingParameterException
+     * @throws Exception
+     */
     #[Route('/', name: 'app_rag')]
-    public function index(): JsonResponse
+    public function index(Request $request): Response
     {
 
-        $es = $this->esClientFactory->getClient();
-        $config = $this->ollamaConfigFactory->getConfig();
-        $chat = new OllamaChat($config);
-        $embeddingGenerator = new OllamaEmbeddingGenerator($config);
+        $form = $this->createForm(QuestionFormType::class);
+        $form->handleRequest($request);
 
-        $elasticVectorStore = new ElasticsearchVectorStore($es, 'intervention');
+        $answer = null;
+        if ($form->isSubmitted() && $form->isValid()) {
+            $question = $form->get('question')->getData();
 
-        #RAG
-        $qa = new QuestionAnswering(
-            $elasticVectorStore,
-            $embeddingGenerator,
-            $chat
-        );
+            $es = $this->esClientFactory->getClient();
+            $config = $this->ollamaConfigFactory->getConfig();
+            $chat = new OllamaChat($config);
+            $embeddingGenerator = new OllamaEmbeddingGenerator($config);
 
-        $answer = $qa->answerQuestion("Ask a question", 4);
+            $elasticVectorStore = new ElasticsearchVectorStore($es, 'intervention');
 
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            "answer" => $answer,
-            'path' => 'src/Controller/RagController.php',
+            $qa = new QuestionAnswering(
+                $elasticVectorStore,
+                $embeddingGenerator,
+                $chat
+            );
+
+            $answer = $qa->answerQuestion($question, 4);
+        }
+
+        return $this->render('rag.html.twig', [
+            'form' => $form->createView(),
+            'answer' => $this->cleanAnswer($answer),
         ]);
     }
 
+    private function cleanAnswer(?string $answer): string
+    {
+        return preg_replace('/<think>.*<\/think>/s', '', $answer ?? '') ?? '';
+    }
 }

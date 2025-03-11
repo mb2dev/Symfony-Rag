@@ -6,3 +6,5 @@ parameters:
         - public/
         - src/
         - tests/
+    excludePaths:
+            - %rootDir%/../tests/bootstrap.php

@@ -24,8 +24,10 @@ class GenerateEmbeddingsCommand extends Command
     private OllamaConfigFactory $ollamaConfigFactory;
 
 
-    public function __construct(ElasticSearchClientFactory $elasticSearchClientFactory, OllamaConfigFactory $ollamaConfigFactory)
-    {
+    public function __construct(
+        ElasticSearchClientFactory $elasticSearchClientFactory,
+        OllamaConfigFactory $ollamaConfigFactory
+    ) {
         parent::__construct();
         $this->esClientFactory = $elasticSearchClientFactory;
         $this->ollamaConfigFactory = $ollamaConfigFactory;
@@ -42,6 +44,10 @@ class GenerateEmbeddingsCommand extends Command
 
         $io->title("Open the JSON Document");
         $jsonFile =  file_get_contents(__DIR__ . '/../../public/intervention.json');
+        if (! $jsonFile) {
+            return Command::FAILURE;
+        }
+
         $documents = json_decode($jsonFile, true);
         $io->success("Document Loaded");
 
@@ -51,14 +57,16 @@ class GenerateEmbeddingsCommand extends Command
         foreach ($documents as $item) {
             $newDocument = new  Document();
             $data = json_encode($item);
-            $newDocument->id = $item['id'];
-            $newDocument->content = $data;
-            $newDocument->hash = hash('sha256', $data);
-            $newDocument->sourceType = 'json';
-            $newDocument->sourceName = "intervention";
-            $newDocument->chunkNumber = $chunkNumber;
-            $chunkNumber++;
-            $splitDocuments[] = $newDocument;
+            if (false != $data) {
+                $newDocument->id = $item['id'];
+                $newDocument->content = $data;
+                $newDocument->hash = hash('sha256', $data);
+                $newDocument->sourceType = 'json';
+                $newDocument->sourceName = "intervention";
+                $newDocument->chunkNumber = $chunkNumber;
+                $chunkNumber++;
+                $splitDocuments[] = $newDocument;
+            }
         }
         $io->success("Split Finished");
 

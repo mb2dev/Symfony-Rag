@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ask a question{% endblock %}
+
+{% block body %}
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-4">
+                    <h1 class="text-center mb-4">Ask a question</h1>
+
+                    {% form_theme form 'bootstrap_5_layout.html.twig' %}
+
+                    {{ form_start(form, {'attr': {'id': 'question-form'}}) }}
+                    <div class="mb-3">
+                        {{ form_row(form.question) }}
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary" id="submit-btn">
+                            Ask a question
+                        </button>
+                        <div id="loading-spinner" class="text-center mt-3 d-none">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                    {{ form_end(form) }}
+
+                    {% if answer %}
+                        <div class="mt-4">
+                            <h2 class="text-center text-success">Answer :</h2>
+                            <div class="border p-3 bg-light rounded">
+                                {{ answer|markdown_to_html|raw }}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('question-form').addEventListener('submit', function() {
+            document.getElementById('submit-btn').classList.add('d-none');  // Hide btn
+            document.getElementById('loading-spinner').classList.remove('d-none');  // Display btn
+        });
+    </script>
+{% endblock %}
