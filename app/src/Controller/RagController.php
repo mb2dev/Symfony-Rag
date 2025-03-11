@@ -2,9 +2,10 @@
 
 namespace App\Controller;
 
-use Elastic\Elasticsearch\ClientBuilder;
-use LLPhant\Chat\OpenAIChat;
-use LLPhant\Embeddings\EmbeddingGenerator\OpenAI\OpenAI3SmallEmbeddingGenerator;
+use App\Factory\ElasticSearchClientFactory;
+use App\Factory\OllamaConfigFactory;
+use LLPhant\Chat\OllamaChat;
+use LLPhant\Embeddings\EmbeddingGenerator\Ollama\OllamaEmbeddingGenerator;
 use LLPhant\Embeddings\VectorStores\Elasticsearch\ElasticsearchVectorStore;
 use LLPhant\Query\SemanticSearch\QuestionAnswering;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,35 +14,40 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class RagController extends AbstractController
 {
+    private ElasticSearchClientFactory $esClientFactory;
+    private OllamaConfigFactory $ollamaConfigFactory;
+
+    public function __construct(ElasticSearchClientFactory $esClientFactory, OllamaConfigFactory $ollamaConfigFactory)
+    {
+        $this->esClientFactory = $esClientFactory;
+        $this->ollamaConfigFactory = $ollamaConfigFactory;
+    }
+
     #[Route('/', name: 'app_rag')]
     public function index(): JsonResponse
     {
-//        dump($_ENV);exit;
-        $es = (new ClientBuilder())::create()
-            ->setHosts(["http://elasticsearch:9200"])
-            ->build();
 
+        $es = $this->esClientFactory->getClient();
+        $config = $this->ollamaConfigFactory->getConfig();
+        $chat = new OllamaChat($config);
+        $embeddingGenerator = new OllamaEmbeddingGenerator($config);
 
-       // $chat = new GPT4Turbo();
-        $embeddingGenerator = new OpenAI3SmallEmbeddingGenerator();
-
-        $elasticVectorStore = new ElasticsearchVectorStore($es);
-
+        $elasticVectorStore = new ElasticsearchVectorStore($es, 'intervention');
 
         #RAG
         $qa = new QuestionAnswering(
             $elasticVectorStore,
             $embeddingGenerator,
-            new OpenAIChat()
+            $chat
         );
 
-        $answer = $qa->answerQuestion("A quoi servent les fichiers XLIFF ?");
-
+        $answer = $qa->answerQuestion("Ask a question", 4);
 
         return $this->json([
             'message' => 'Welcome to your new controller!',
-            "nnswer" => $answer,
+            "answer" => $answer,
             'path' => 'src/Controller/RagController.php',
         ]);
     }
+
 }

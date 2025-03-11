@@ -2,17 +2,15 @@
 
 namespace App\Command;
 
-use Elastic\Elasticsearch\ClientBuilder;
-use LLPhant\Embeddings\DataReader\FileDataReader;
-use LLPhant\Embeddings\DocumentSplitter\DocumentSplitter;
-use LLPhant\Embeddings\EmbeddingGenerator\OpenAI\OpenAI3SmallEmbeddingGenerator;
+use App\Factory\ElasticSearchClientFactory;
+use App\Factory\OllamaConfigFactory;
+use Exception;
+use LLPhant\Embeddings\Document;
+use LLPhant\Embeddings\EmbeddingGenerator\Ollama\OllamaEmbeddingGenerator;
 use LLPhant\Embeddings\VectorStores\Elasticsearch\ElasticsearchVectorStore;
-use LLPhant\Embeddings\VectorStores\FileSystem\FileSystemVectorStore;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -22,68 +20,64 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class GenerateEmbeddingsCommand extends Command
 {
-    public function __construct()
+    private ElasticSearchClientFactory $esClientFactory;
+    private OllamaConfigFactory $ollamaConfigFactory;
+
+
+    public function __construct(ElasticSearchClientFactory $elasticSearchClientFactory, OllamaConfigFactory $ollamaConfigFactory)
     {
         parent::__construct();
+        $this->esClientFactory = $elasticSearchClientFactory;
+        $this->ollamaConfigFactory = $ollamaConfigFactory;
     }
 
-//    protected function configure(): void
-//    {
-//        $this
-//            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-//            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
-//        ;
-//    }
-
+    /**
+     * @throws Exception
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
         $io->title("Begin to generate Embeddings");
 
-
-        $io->title("Read the document");
-        $dataReader = new FileDataReader(__DIR__ . '/../../public/best_practices.rst');
-        $documents = $dataReader->getDocuments();
-
+        $io->title("Open the JSON Document");
+        $jsonFile =  file_get_contents(__DIR__ . '/../../public/intervention.json');
+        $documents = json_decode($jsonFile, true);
         $io->success("Document Loaded");
 
-        $io->section("Cutting out the document");
-        $splittedDocuments = DocumentSplitter::splitDocuments($documents, 500);
-
-        $io->success("Document splitted");
+        $io->section("Split JSON and Create LLPhant Document for each Object");
+        $chunkNumber = 0;
+        $splitDocuments = [];
+        foreach ($documents as $item) {
+            $newDocument = new  Document();
+            $data = json_encode($item);
+            $newDocument->id = $item['id'];
+            $newDocument->content = $data;
+            $newDocument->hash = hash('sha256', $data);
+            $newDocument->sourceType = 'json';
+            $newDocument->sourceName = "intervention";
+            $newDocument->chunkNumber = $chunkNumber;
+            $chunkNumber++;
+            $splitDocuments[] = $newDocument;
+        }
+        $io->success("Split Finished");
 
         $io->section("Generate Embeddings");
-        $embeddingGenerator = new OpenAI3SmallEmbeddingGenerator();
-        $embeddedDocuments = $embeddingGenerator->embedDocuments($splittedDocuments);
+        $config = $this->ollamaConfigFactory->getConfig();
 
-        $io->section("Save Embeddings");
-        $vectorStore = new FileSystemVectorStore();
-        $vectorStore->addDocuments($embeddedDocuments);
+        $embeddingGenerator = new OllamaEmbeddingGenerator($config);
+        $embeddedDocuments = $embeddingGenerator->embedDocuments($splitDocuments);
 
+        $io->success("Embeddings generated");
 
-        $io->section("Index all the embeddings to Elasticsearch");
-        $es = (new ClientBuilder())::create()
+        $io->section("Save Embeddings into ES");
+        $es = $this->esClientFactory->getClient();
 
-            ->setHosts(["http://elasticsearch:9200"])
-//            ->setApiKey($env['ES_LOCAL_API_KEY'])
-            ->build();
-
-        $elasticVectorStore = new ElasticsearchVectorStore($es);
+        $elasticVectorStore = new ElasticsearchVectorStore($es, 'intervention');
         $elasticVectorStore->addDocuments($embeddedDocuments);
 
 
-//        $arg1 = $input->getArgument('arg1');
-//
-//        if ($arg1) {
-//            $io->note(sprintf('You passed an argument: %s', $arg1));
-//        }
-//
-//        if ($input->getOption('option1')) {
-//            // ...
-//        }
-
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        $io->success("Embeddings saved to ES");
 
         return Command::SUCCESS;
     }
