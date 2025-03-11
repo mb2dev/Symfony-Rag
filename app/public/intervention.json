@@ -1,0 +1,147 @@
+[
+  {
+    "id": 1,
+    "type_intervention": "Réparation",
+    "equipement": "Compresseur A123",
+    "technicien": "Jean Dupont",
+    "date_intervention": "2025-03-01T08:30:00",
+    "duree": 120,
+    "priorite": "Haute",
+    "status": "Terminée",
+    "description": "Réparation du compresseur défectueux. Remplacement du moteur principal.",
+    "pieces_utilisees": [
+      { "piece": "Moteur", "quantite": 1 },
+      { "piece": "Ressort", "quantite": 2 }
+    ],
+    "commentaires": "Problème résolu après remplacement du moteur. Test réussi."
+  },
+  {
+    "id": 2,
+    "type_intervention": "Maintenance préventive",
+    "equipement": "Pompe hydraulique B456",
+    "technicien": "Alice Martin",
+    "date_intervention": "2025-03-02T10:00:00",
+    "duree": 90,
+    "priorite": "Moyenne",
+    "status": "Terminée",
+    "description": "Vérification et entretien de la pompe hydraulique.",
+    "pieces_utilisees": [],
+    "commentaires": "Pompe en bon état, nettoyage effectué."
+  },
+  {
+    "id": 3,
+    "type_intervention": "Réparation",
+    "equipement": "Chauffe-eau C789",
+    "technicien": "Marc Leroy",
+    "date_intervention": "2025-03-02T14:30:00",
+    "duree": 150,
+    "priorite": "Haute",
+    "status": "En cours",
+    "description": "Fuite sur le chauffe-eau. Remplacement de la valve défectueuse.",
+    "pieces_utilisees": [
+      { "piece": "Valve", "quantite": 1 },
+      { "piece": "Joint", "quantite": 1 }
+    ],
+    "commentaires": "Valve à remplacer, en attente de la pièce."
+  },
+  {
+    "id": 4,
+    "type_intervention": "Inspection",
+    "equipement": "Générateur D102",
+    "technicien": "Sophie Durand",
+    "date_intervention": "2025-03-03T09:00:00",
+    "duree": 60,
+    "priorite": "Basse",
+    "status": "Terminée",
+    "description": "Inspection de routine pour vérifier les niveaux d’huile et de carburant.",
+    "pieces_utilisees": [],
+    "commentaires": "Tout est conforme, aucune anomalie."
+  },
+  {
+    "id": 5,
+    "type_intervention": "Réparation",
+    "equipement": "Système de climatisation E567",
+    "technicien": "Lucien Petit",
+    "date_intervention": "2025-03-03T15:00:00",
+    "duree": 180,
+    "priorite": "Haute",
+    "status": "Terminée",
+    "description": "Réparation du système de climatisation en panne. Remplacement du compresseur.",
+    "pieces_utilisees": [
+      { "piece": "Compresseur", "quantite": 1 },
+      { "piece": "Filtre à air", "quantite": 1 }
+    ],
+    "commentaires": "Réparation complète, test de fonctionnement réussi."
+  },
+  {
+    "id": 6,
+    "type_intervention": "Maintenance préventive",
+    "equipement": "Ventilateur F234",
+    "technicien": "Élodie Marchand",
+    "date_intervention": "2025-03-04T08:00:00",
+    "duree": 75,
+    "priorite": "Basse",
+    "status": "Terminée",
+    "description": "Vérification des filtres et nettoyage des pales.",
+    "pieces_utilisees": [],
+    "commentaires": "Filtres en bon état, pas de remplacement nécessaire."
+  },
+  {
+    "id": 7,
+    "type_intervention": "Réparation",
+    "equipement": "Machine à injection M999",
+    "technicien": "François Besson",
+    "date_intervention": "2025-03-05T11:30:00",
+    "duree": 240,
+    "priorite": "Haute",
+    "status": "En cours",
+    "description": "Problème mécanique sur la machine à injection. Réparation du moteur.",
+    "pieces_utilisees": [
+      { "piece": "Moteur", "quantite": 1 },
+      { "piece": "Câble", "quantite": 2 }
+    ],
+    "commentaires": "En cours de réparation, en attente de pièces supplémentaires."
+  },
+  {
+    "id": 8,
+    "type_intervention": "Maintenance préventive",
+    "equipement": "Transformateur T234",
+    "technicien": "Pauline Boucher",
+    "date_intervention": "2025-03-06T13:00:00",
+    "duree": 120,
+    "priorite": "Moyenne",
+    "status": "Terminée",
+    "description": "Vérification des niveaux d'huile et inspection des systèmes de refroidissement.",
+    "pieces_utilisees": [],
+    "commentaires": "Niveau d'huile correct, aucun problème trouvé."
+  },
+  {
+    "id": 9,
+    "type_intervention": "Réparation",
+    "equipement": "Vanne de régulation V345",
+    "technicien": "Julien Lefevre",
+    "date_intervention": "2025-03-06T16:00:00",
+    "duree": 180,
+    "priorite": "Moyenne",
+    "status": "Terminée",
+    "description": "Réparation de la vanne de régulation défectueuse.",
+    "pieces_utilisees": [
+      { "piece": "Vanne", "quantite": 1 },
+      { "piece": "Joint", "quantite": 2 }
+    ],
+    "commentaires": "Vanne réparée et testée."
+  },
+  {
+    "id": 10,
+    "type_intervention": "Inspection",
+    "equipement": "Chauffage H456",
+    "technicien": "Thierry Roussel",
+    "date_intervention": "2025-03-07T10:00:00",
+    "duree": 45,
+    "priorite": "Basse",
+    "status": "Terminée",
+    "description": "Inspection de l'unité de chauffage. Vérification du thermostat et des connexions électriques.",
+    "pieces_utilisees": [],
+    "commentaires": "Inspection OK, pas de problème détecté."
+  }
+]

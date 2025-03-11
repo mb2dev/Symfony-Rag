@@ -60,6 +60,48 @@ services:
     networks:
       - symfony
 
+  ollama:
+    image: ollama/ollama:0.5.13-rocm
+    ports:
+      - "11434:11434"
+    devices:
+      - "/dev/kfd"
+      - "/dev/dri"
+    group_add:
+      - "video"
+    depends_on:
+      - php-fpm
+    environment:
+      - ROC_ENABLE=1
+      - HSA_OVERRIDE_GFX_VERSION=10.3.0
+      - LD_LIBRARY_PATH=/opt/rocm/lib
+    volumes:
+      - open-webui-local:/app/backend/data
+    networks:
+      - symfony
+
+
+  openWebUI:
+    image: ghcr.io/open-webui/open-webui:main
+    restart: always
+    ports:
+      - "3000:8080"
+    security_opt:
+      - seccomp:unconfined
+    cap_add:
+        - SYS_PTRACE
+    ipc: host
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - open-webui-local:/app/backend/data
+    networks:
+      - symfony
+
+volumes:
+  open-webui-local:
+  ollama-local:
+
 networks:
   symfony:
     driver: bridge

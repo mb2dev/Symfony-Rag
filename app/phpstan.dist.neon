@@ -7,4 +7,4 @@ parameters:
         - src/
         - tests/
     excludePaths:
-            - %rootDir%/../tests/bootstrap.php
+        - tests/bootstrap.php
