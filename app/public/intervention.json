@@ -1,147 +1,115 @@
 [
   {
     "id": 1,
-    "type_intervention": "Réparation",
-    "equipement": "Compresseur A123",
-    "technicien": "Jean Dupont",
-    "date_intervention": "2025-03-01T08:30:00",
-    "duree": 120,
-    "priorite": "Haute",
-    "status": "Terminée",
-    "description": "Réparation du compresseur défectueux. Remplacement du moteur principal.",
-    "pieces_utilisees": [
-      { "piece": "Moteur", "quantite": 1 },
-      { "piece": "Ressort", "quantite": 2 }
+    "intervention_type": "Repair",
+    "equipment": "Industrial Oven X200",
+    "technician": "Alex Dupont",
+    "intervention_date": "2025-03-01T08:30:00",
+    "duration": 90,
+    "priority": "High",
+    "status": "Completed",
+    "description": "Oven overheating issue. Replaced faulty thermostat.",
+    "used_parts": [
+      { "part": "Thermostat", "quantity": 1 }
     ],
-    "commentaires": "Problème résolu après remplacement du moteur. Test réussi."
+    "comments": "Temperature now stable, issue resolved."
   },
   {
     "id": 2,
-    "type_intervention": "Maintenance préventive",
-    "equipement": "Pompe hydraulique B456",
-    "technicien": "Alice Martin",
-    "date_intervention": "2025-03-02T10:00:00",
-    "duree": 90,
-    "priorite": "Moyenne",
-    "status": "Terminée",
-    "description": "Vérification et entretien de la pompe hydraulique.",
-    "pieces_utilisees": [],
-    "commentaires": "Pompe en bon état, nettoyage effectué."
+    "intervention_type": "Preventive Maintenance",
+    "equipment": "Conveyor Belt Z500",
+    "technician": "Sophie Lambert",
+    "intervention_date": "2025-03-02T10:00:00",
+    "duration": 120,
+    "priority": "Medium",
+    "status": "Completed",
+    "description": "Lubrication and belt alignment check.",
+    "used_parts": [],
+    "comments": "Minimal wear detected, no replacement needed."
   },
   {
     "id": 3,
-    "type_intervention": "Réparation",
-    "equipement": "Chauffe-eau C789",
-    "technicien": "Marc Leroy",
-    "date_intervention": "2025-03-02T14:30:00",
-    "duree": 150,
-    "priorite": "Haute",
-    "status": "En cours",
-    "description": "Fuite sur le chauffe-eau. Remplacement de la valve défectueuse.",
-    "pieces_utilisees": [
-      { "piece": "Valve", "quantite": 1 },
-      { "piece": "Joint", "quantite": 1 }
+    "intervention_type": "Repair",
+    "equipment": "Hydraulic Press P789",
+    "technician": "Marc Leroy",
+    "intervention_date": "2025-03-02T14:30:00",
+    "duration": 150,
+    "priority": "High",
+    "status": "In Progress",
+    "description": "Hydraulic fluid leak. Replacement of seals and pump adjustment.",
+    "used_parts": [
+      { "part": "Seal", "quantity": 4 },
+      { "part": "Hydraulic Fluid", "quantity": 2 }
     ],
-    "commentaires": "Valve à remplacer, en attente de la pièce."
+    "comments": "Leak identified, waiting for additional parts."
   },
   {
     "id": 4,
-    "type_intervention": "Inspection",
-    "equipement": "Générateur D102",
-    "technicien": "Sophie Durand",
-    "date_intervention": "2025-03-03T09:00:00",
-    "duree": 60,
-    "priorite": "Basse",
-    "status": "Terminée",
-    "description": "Inspection de routine pour vérifier les niveaux d’huile et de carburant.",
-    "pieces_utilisees": [],
-    "commentaires": "Tout est conforme, aucune anomalie."
+    "intervention_type": "Inspection",
+    "equipment": "Cooling System Y145",
+    "technician": "Emma Rousseau",
+    "intervention_date": "2025-03-03T09:00:00",
+    "duration": 60,
+    "priority": "Low",
+    "status": "Completed",
+    "description": "Routine inspection for coolant levels and pipe integrity.",
+    "used_parts": [],
+    "comments": "No leaks detected, system functioning properly."
   },
   {
     "id": 5,
-    "type_intervention": "Réparation",
-    "equipement": "Système de climatisation E567",
-    "technicien": "Lucien Petit",
-    "date_intervention": "2025-03-03T15:00:00",
-    "duree": 180,
-    "priorite": "Haute",
-    "status": "Terminée",
-    "description": "Réparation du système de climatisation en panne. Remplacement du compresseur.",
-    "pieces_utilisees": [
-      { "piece": "Compresseur", "quantite": 1 },
-      { "piece": "Filtre à air", "quantite": 1 }
+    "intervention_type": "Repair",
+    "equipment": "Industrial Oven X200",
+    "technician": "Lucas Bernard",
+    "intervention_date": "2025-03-04T11:00:00",
+    "duration": 110,
+    "priority": "High",
+    "status": "Completed",
+    "description": "Oven door seal damaged. Replaced and tested for heat retention.",
+    "used_parts": [
+      { "part": "Door Seal", "quantity": 1 }
     ],
-    "commentaires": "Réparation complète, test de fonctionnement réussi."
+    "comments": "Oven now fully operational."
   },
   {
     "id": 6,
-    "type_intervention": "Maintenance préventive",
-    "equipement": "Ventilateur F234",
-    "technicien": "Élodie Marchand",
-    "date_intervention": "2025-03-04T08:00:00",
-    "duree": 75,
-    "priorite": "Basse",
-    "status": "Terminée",
-    "description": "Vérification des filtres et nettoyage des pales.",
-    "pieces_utilisees": [],
-    "commentaires": "Filtres en bon état, pas de remplacement nécessaire."
+    "intervention_type": "Preventive Maintenance",
+    "equipment": "Generator G300",
+    "technician": "Noah Lefevre",
+    "intervention_date": "2025-03-05T08:30:00",
+    "duration": 90,
+    "priority": "Medium",
+    "status": "Completed",
+    "description": "Battery and fuel filter check.",
+    "used_parts": [],
+    "comments": "Battery voltage normal, replaced fuel filter."
   },
   {
     "id": 7,
-    "type_intervention": "Réparation",
-    "equipement": "Machine à injection M999",
-    "technicien": "François Besson",
-    "date_intervention": "2025-03-05T11:30:00",
-    "duree": 240,
-    "priorite": "Haute",
-    "status": "En cours",
-    "description": "Problème mécanique sur la machine à injection. Réparation du moteur.",
-    "pieces_utilisees": [
-      { "piece": "Moteur", "quantite": 1 },
-      { "piece": "Câble", "quantite": 2 }
+    "intervention_type": "Repair",
+    "equipment": "Hydraulic Press P789",
+    "technician": "Marc Leroy",
+    "intervention_date": "2025-03-06T14:30:00",
+    "duration": 180,
+    "priority": "High",
+    "status": "Completed",
+    "description": "Finalized repair of hydraulic press. Pump replacement.",
+    "used_parts": [
+      { "part": "Hydraulic Pump", "quantity": 1 }
     ],
-    "commentaires": "En cours de réparation, en attente de pièces supplémentaires."
+    "comments": "Hydraulic pressure restored, system operational."
   },
   {
     "id": 8,
-    "type_intervention": "Maintenance préventive",
-    "equipement": "Transformateur T234",
-    "technicien": "Pauline Boucher",
-    "date_intervention": "2025-03-06T13:00:00",
-    "duree": 120,
-    "priorite": "Moyenne",
-    "status": "Terminée",
-    "description": "Vérification des niveaux d'huile et inspection des systèmes de refroidissement.",
-    "pieces_utilisees": [],
-    "commentaires": "Niveau d'huile correct, aucun problème trouvé."
-  },
-  {
-    "id": 9,
-    "type_intervention": "Réparation",
-    "equipement": "Vanne de régulation V345",
-    "technicien": "Julien Lefevre",
-    "date_intervention": "2025-03-06T16:00:00",
-    "duree": 180,
-    "priorite": "Moyenne",
-    "status": "Terminée",
-    "description": "Réparation de la vanne de régulation défectueuse.",
-    "pieces_utilisees": [
-      { "piece": "Vanne", "quantite": 1 },
-      { "piece": "Joint", "quantite": 2 }
-    ],
-    "commentaires": "Vanne réparée et testée."
-  },
-  {
-    "id": 10,
-    "type_intervention": "Inspection",
-    "equipement": "Chauffage H456",
-    "technicien": "Thierry Roussel",
-    "date_intervention": "2025-03-07T10:00:00",
-    "duree": 45,
-    "priorite": "Basse",
-    "status": "Terminée",
-    "description": "Inspection de l'unité de chauffage. Vérification du thermostat et des connexions électriques.",
-    "pieces_utilisees": [],
-    "commentaires": "Inspection OK, pas de problème détecté."
+    "intervention_type": "Inspection",
+    "equipment": "Conveyor Belt Z500",
+    "technician": "Sophie Lambert",
+    "intervention_date": "2025-03-07T13:00:00",
+    "duration": 60,
+    "priority": "Low",
+    "status": "Completed",
+    "description": "Inspection of belt wear and motor function.",
+    "used_parts": [],
+    "comments": "Motor operating within normal range."
   }
 ]

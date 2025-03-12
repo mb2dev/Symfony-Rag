@@ -55,7 +55,7 @@ final class RagController extends AbstractController
                 $chat
             );
 
-            $answer = $qa->answerQuestion($question, 4);
+            $answer = $qa->answerQuestion($question, 10);
         }
 
         return $this->render('rag.html.twig', [

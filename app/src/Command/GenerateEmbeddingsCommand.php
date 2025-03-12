@@ -59,7 +59,18 @@ class GenerateEmbeddingsCommand extends Command
             $data = json_encode($item);
             if (false != $data) {
                 $newDocument->id = $item['id'];
-                $newDocument->content = $data;
+                $formattedContent = "Intervention ID: {$item['id']}\n".
+                    "Type: {$item['intervention_type']}\n".
+                    "Equipment: {$item['equipment']}\n".
+                    "Technician: {$item['technician']}\n".
+                    "Date: {$item['intervention_date']}\n".
+                    "Duration: {$item['duration']} min\n".
+                    "Priority: {$item['priority']}\n".
+                    "Status: {$item['status']}\n".
+                    "Description: {$item['description']}\n".
+                    "Parts Used: ".implode(", ", array_map(fn($p) => "{$p['quantity']}x {$p['part']}", $item['used_parts']))."\n".
+                    "Comments: {$item['comments']}";
+                $newDocument->content = $formattedContent;
                 $newDocument->hash = hash('sha256', $data);
                 $newDocument->sourceType = 'json';
                 $newDocument->sourceName = "intervention";
