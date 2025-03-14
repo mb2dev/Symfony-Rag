@@ -59,18 +59,7 @@ class GenerateEmbeddingsCommand extends Command
             $data = json_encode($item);
             if (false != $data) {
                 $newDocument->id = $item['id'];
-                $formattedContent = "Intervention ID: {$item['id']}\n".
-                    "Type: {$item['intervention_type']}\n".
-                    "Equipment: {$item['equipment']}\n".
-                    "Technician: {$item['technician']}\n".
-                    "Date: {$item['intervention_date']}\n".
-                    "Duration: {$item['duration']} min\n".
-                    "Priority: {$item['priority']}\n".
-                    "Status: {$item['status']}\n".
-                    "Description: {$item['description']}\n".
-                    "Parts Used: ".implode(", ", array_map(fn($p) => "{$p['quantity']}x {$p['part']}", $item['used_parts']))."\n".
-                    "Comments: {$item['comments']}";
-                $newDocument->content = $formattedContent;
+                $newDocument->content = $this->formatEmbeddingContent($item);
                 $newDocument->hash = hash('sha256', $data);
                 $newDocument->sourceType = 'json';
                 $newDocument->sourceName = "intervention";
@@ -99,5 +88,39 @@ class GenerateEmbeddingsCommand extends Command
         $io->success("Embeddings saved to ES");
 
         return Command::SUCCESS;
+    }
+
+    /**
+     * @param array{
+     *     id: int,
+     *     intervention_type: string,
+     *     equipment: string,
+     *     technician: string,
+     *     intervention_date: string,
+     *     duration: int,
+     *     priority: string,
+     *     status: string,
+     *     description: string,
+     *     used_parts: array<array{quantity: int, part: string}>,
+     *     comments: string
+     * } $item
+     */
+    private function formatEmbeddingContent(array $item): string
+    {
+        return "Intervention ID: {$item['id']}\n" .
+            "Type: {$item['intervention_type']}\n" .
+            "Equipment: {$item['equipment']}\n" .
+            "Technician: {$item['technician']}\n" .
+            "Date: {$item['intervention_date']}\n" .
+            "Duration: {$item['duration']} min\n" .
+            "Priority: {$item['priority']}\n" .
+            "Status: {$item['status']}\n" .
+            "Description: {$item['description']}\n" .
+            "Parts Used: " .
+            implode(", ", array_map(
+                fn(array $p): string => "{$p['quantity']}x {$p['part']}",
+                $item['used_parts']
+            )) . "\n" .
+            "Comments: {$item['comments']}";
     }
 }
